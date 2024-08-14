@@ -1,29 +1,20 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity 0.8.23;
 
-import "forge-std/Script.sol";
-import "../src/OTCSwap.sol";  // Update the path if necessary
+import {Script} from "forge-std/Script.sol";
+import {console} from "forge-std/console.sol";
+
+import {OTCSwap} from "../src/OTCSwap.sol";
 
 contract DeployOTCSwap is Script {
-    
     function run() external {
+        vm.startBroadcast();
 
-        uint256 deployerPrivateKey = vm.envUint("private_KEY");
+        // Deploy the OTCSwap contract
+        OTCSwap otcswap = new OTCSwap();
 
-        vm.startBroadcast(deployerPrivateKey);
-
-        OTCSwap otcswap = new OTCSwap(
-            0xa0Ee7A142d267C1f36714E4a8F75612F20a79720,   
-            0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f,    
-            0x14dC79964da2C08b23698B3D3cc7Ca32193d9955,    
-            0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc,                   
-            1000,                    
-            1000,     
-            block.timestamp + 30 minutes 
-        );
+        console.log("OTCSwap deployed at:", address(otcswap));
 
         vm.stopBroadcast();
-
-        console.log("OTCSwap has been deployed at:", address(otcswap));
     }
 }
